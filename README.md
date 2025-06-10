@@ -1,2 +1,2 @@
 # Mister-Cleanup-Script
-Scans MiSTer games folders and deletes cores and directories based on if the games folders are empty.
+Scans MiSTer games folders and deletes cores and directories based on if the games folders are empty.  Asks for confirmation for each deletion.
