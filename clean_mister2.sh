@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # This script cleans up unused MiSTer FPGA PC/Console game directories and their corresponding core files.
-# It identifies directories in /media/fat/games that are empty or contain only one file.
-# Upon finding such a directory, it prompts the user to confirm deletion of the directory
+# It identifies directories in /media/fat/games that have less than 10 files.
+# Upon finding such a directory, it lists its contents and prompts the user to confirm deletion of the directory
 # and its associated core files located in /media/fat/_Computer or /media/fat/_Console.
 
 GAMES_PATH="/media/fat/games"
@@ -129,11 +129,15 @@ echo "Scanning for unused PC/Console game directories..."
 for dir in "$GAMES_PATH"/*; do
     if [ -d "$dir" ]; then
         dir_name=$(basename "$dir")
+        # Check for less than 10 files (excluding directories)
         file_count=$(find "$dir" -maxdepth 1 -type f | wc -l)
 
-        if [ "$file_count" -le 1 ]; then
+        if [ "$file_count" -lt 10 ]; then # Changed condition to less than 10
             echo "----------------------------------------------------"
             echo "Found potential unused directory: $dir ($file_count files)"
+            echo "Files in this directory:"
+            ls -F "$dir" # List files with type indicators
+            echo
 
             # Check if the directory name exists in our core map
             if [[ -n "${core_map[$dir_name]}" ]]; then
